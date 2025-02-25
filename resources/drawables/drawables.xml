@@ -1,0 +1,6 @@
+<drawables>
+    <bitmap id="LauncherIcon" filename="launcher_icon.png" />
+    <bitmap id="StepsIcon" filename="steps.png" />
+    <bitmap id="HeartIcon" filename="heart.png" />
+    <bitmap id="Background" filename="green11.png" />
+</drawables>
