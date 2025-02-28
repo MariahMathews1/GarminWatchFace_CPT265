@@ -9,6 +9,17 @@ module Rez {
         (:initialized) var StepsIcon as ResourceId;
         (:initialized) var HeartIcon as ResourceId;
         (:initialized) var Background as ResourceId;
+        (:initialized) var ClearIcon as ResourceId;
+        (:initialized) var CloudyIcon as ResourceId;
+        (:initialized) var RainIcon as ResourceId;
+        (:initialized) var PartlyCloudyIcon as ResourceId;
+        (:initialized) var ThunderstormsIcon as ResourceId;
+        (:initialized) var SnowIcon as ResourceId;
+        (:initialized) var FogIcon as ResourceId;
+        (:initialized) var WindyIcon as ResourceId;
+        (:initialized) var HailIcon as ResourceId;
+        (:initialized) var SandstormIcon as ResourceId;
+        (:initialized) var VolcanicAshIcon as ResourceId;
         (:initialized) var LauncherIcon as ResourceId;
     } // Drawables
 

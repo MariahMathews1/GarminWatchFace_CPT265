@@ -15,6 +15,19 @@ class CPT265_WatchFaceView extends WatchUi.WatchFace {
     private var stepsIcon;
     private var heartIcon;
     private var backgroundImg;
+    private var weatherIcon;
+
+    private var clearIcon;
+    private var cloudyIcon;
+    private var rainIcon;
+    private var partlycloudyIcon;
+    private var thunderstormIcon;
+    private var snowIcon;
+    private var fogIcon;
+    private var widnyIcon;
+    private var hailIcon;
+    private var sandstormIcon;
+    private var volcanicashIcon;
 
     function initialize() {
         WatchFace.initialize();
@@ -24,6 +37,18 @@ class CPT265_WatchFaceView extends WatchUi.WatchFace {
         stepsIcon = Application.loadResource(Rez.Drawables.StepsIcon);
         heartIcon = Application.loadResource(Rez.Drawables.HeartIcon);
         backgroundImg = Application.loadResource(Rez.Drawables.Background);
+
+        clearIcon = Application.loadResource(Rez.Drawables.ClearIcon);
+        cloudyIcon = Application.loadResource(Rez.Drawables.CloudyIcon);;
+        rainIcon = Application.loadResource(Rez.Drawables.RainIcon);
+        partlycloudyIcon = Application.loadResource(Rez.Drawables.PartlyCloudyIcon);
+        thunderstormIcon = Application.loadResource(Rez.Drawables.ThunderstormsIcon);
+        snowIcon = Application.loadResource(Rez.Drawables.SnowIcon);
+        fogIcon = Application.loadResource(Rez.Drawables.FogIcon);
+        widnyIcon = Application.loadResource(Rez.Drawables.WindyIcon);
+        hailIcon = Application.loadResource(Rez.Drawables.HailIcon);
+        sandstormIcon = Application.loadResource(Rez.Drawables.SandstormIcon);
+        volcanicashIcon = Application.loadResource(Rez.Drawables.VolcanicAshIcon);
     }
 
     function onLayout(dc as Dc) as Void {
@@ -44,17 +69,20 @@ class CPT265_WatchFaceView extends WatchUi.WatchFace {
       drawBattery(dc);
       drawCalorie(dc);
       drawWeather(dc);
+      drawWeatherIcon(dc);
       
     }
+
+    //WEATHER TEXT WITH TEMP AND TYPE
     function drawWeather(dc){
       var weather = getWeatherString();
 
       dc.drawText(
-        (dc.getWidth() / 2)+ 60,
-        60,
+        (dc.getWidth() / 2),
+        80,
         Graphics.FONT_XTINY,
         weather,
-        Graphics.TEXT_JUSTIFY_RIGHT
+        Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER 
       ); 
 
     }
@@ -443,6 +471,184 @@ class CPT265_WatchFaceView extends WatchUi.WatchFace {
         Graphics.TEXT_JUSTIFY_CENTER
       );
     }
+
+
+
+    //Retrieves weather icon based on weather condition
+    function getWeatherDrawable() as String {
+    if (!(Toybox has : Weather)) {
+        return "weather_unknown"; // Default icon if Weather API is not available
+    }
+
+    var weatherData = Weather.getCurrentConditions();
+    var condition = weatherData.condition;
+    var conditionIcon;
+
+    // Map weather conditions to drawable resource names
+     switch (condition) {
+        // Clear & Fair Conditions
+        case Weather.CONDITION_CLEAR:
+        case Weather.CONDITION_FAIR:
+            conditionIcon = clearIcon;
+            break;
+
+        // Partly Cloudy Conditions
+        case Weather.CONDITION_PARTLY_CLOUDY:
+        case Weather.CONDITION_PARTLY_CLEAR:
+        case Weather.CONDITION_MOSTLY_CLEAR:
+            conditionIcon = partlycloudyIcon;
+            break;
+
+        // Cloudy Conditions
+        case Weather.CONDITION_CLOUDY:
+        case Weather.CONDITION_THIN_CLOUDS:
+        case Weather.CONDITION_MOSTLY_CLOUDY:
+            conditionIcon = cloudyIcon;
+            break;
+
+        // Rain & Showers
+        case Weather.CONDITION_RAIN:
+        case Weather.CONDITION_LIGHT_RAIN:
+        case Weather.CONDITION_HEAVY_RAIN:
+        case Weather.CONDITION_SHOWERS:
+        case Weather.CONDITION_LIGHT_SHOWERS:
+        case Weather.CONDITION_HEAVY_SHOWERS:
+        case Weather.CONDITION_SCATTERED_SHOWERS:
+        case Weather.CONDITION_CLOUDY_CHANCE_OF_RAIN:
+        case Weather.CONDITION_CHANCE_OF_SHOWERS:
+            conditionIcon = rainIcon;
+            break;
+
+        // Thunderstorms
+        case Weather.CONDITION_THUNDERSTORMS:
+        case Weather.CONDITION_SCATTERED_THUNDERSTORMS:
+        case Weather.CONDITION_CHANCE_OF_THUNDERSTORMS:
+            conditionIcon = thunderstormIcon;
+            break;
+
+        // Snow & Ice
+        case Weather.CONDITION_SNOW:
+        case Weather.CONDITION_LIGHT_SNOW:
+        case Weather.CONDITION_HEAVY_SNOW:
+        case Weather.CONDITION_RAIN_SNOW:
+        case Weather.CONDITION_LIGHT_RAIN_SNOW:
+        case Weather.CONDITION_HEAVY_RAIN_SNOW:
+        case Weather.CONDITION_FLURRIES:
+        case Weather.CONDITION_WINTRY_MIX:
+        case Weather.CONDITION_ICE_SNOW:
+        case Weather.CONDITION_SLEET:
+        case Weather.CONDITION_FREEZING_RAIN:
+        case Weather.CONDITION_CLOUDY_CHANCE_OF_SNOW:
+        case Weather.CONDITION_CLOUDY_CHANCE_OF_RAIN_SNOW:
+        case Weather.CONDITION_CHANCE_OF_SNOW:
+        case Weather.CONDITION_CHANCE_OF_RAIN_SNOW:
+            conditionIcon = snowIcon;
+            break;
+
+        // Fog & Mist
+        case Weather.CONDITION_FOG:
+        case Weather.CONDITION_MIST:
+        case Weather.CONDITION_HAZE:
+        case Weather.CONDITION_HAZY:
+        case Weather.CONDITION_SMOKE:
+            conditionIcon = fogIcon;
+            break;
+
+        // Wind & Storms
+        case Weather.CONDITION_WINDY:
+        case Weather.CONDITION_SQUALL:
+        case Weather.CONDITION_HURRICANE:
+        case Weather.CONDITION_TROPICAL_STORM:
+        case Weather.CONDITION_TORNADO:
+            conditionIcon = widnyIcon;
+            break;
+
+        // Hail & Ice
+        case Weather.CONDITION_HAIL:
+        case Weather.CONDITION_ICE:
+        case Weather.CONDITION_FREEZING_RAIN:
+            conditionIcon = hailIcon;
+            break;
+
+        // Sand & Dust Storms
+        case Weather.CONDITION_SAND:
+        case Weather.CONDITION_SANDSTORM:
+        case Weather.CONDITION_DUST:
+            conditionIcon = sandstormIcon;
+            break;
+
+        // Volcanic Ash
+        case Weather.CONDITION_VOLCANIC_ASH:
+            conditionIcon = volcanicashIcon;
+            break;
+
+        // Default to Clear if Unknown
+        case Weather.CONDITION_UNKNOWN:
+        default:
+            conditionIcon = clearIcon;
+            break;
+    }
+
+    return conditionIcon;
+
+}  
+    function updateWeatherIcon() {
+        var condition = getWeatherDrawable();
+        
+        
+        if (condition == "clear") {
+            weatherIcon = clearIcon;
+        } 
+        else if (condition == "cloudy") {
+            weatherIcon = cloudyIcon;
+        }
+        else if (condition == "rain") {
+            weatherIcon = rainIcon;
+        } 
+        else if (condition == "partly_cloudy") {
+            weatherIcon = partlycloudyIcon;
+        }
+        else if (condition == "thunderstorms") {
+            weatherIcon = thunderstormIcon;
+        }
+        else if (condition == "snow") {
+            weatherIcon = snowIcon;
+        }
+        else if (condition == "fog") {
+            weatherIcon = fogIcon;
+        }
+        else if (condition == "windy") {
+            weatherIcon = widnyIcon;
+        }
+        else if (condition == "hail") {
+            weatherIcon = hailIcon;
+        }
+        else if (condition == "sandstorm") {
+            weatherIcon = sandstormIcon;
+        }
+        else if (condition == "volcanic_ash") {
+            weatherIcon = volcanicashIcon;
+        }
+    }
+
+    //WEATHER ICON
+    function drawWeatherIcon(dc) {
+    // updateWeatherIcon(); // Ensure we have the right icon before drawing
+
+    var icon = getWeatherDrawable();
+    
+    //   dc.drawBitmap(
+    //     40,
+    //     55,
+    //     icon
+    //   ); 
+    dc.drawBitmap(
+        5,
+        105,
+        icon
+      ); 
+
+}
 
 
 
